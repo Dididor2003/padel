@@ -20,27 +20,34 @@ public class EstadistiquesServiceImpl implements EstadistiquesService {
 
     @Override
     public EstadistiquesResponse getEstadistiquesUsuari(String userId) {
-        User user = userRepository.findById(userId)
-                .orElseThrow(() -> new RecursoNoEncontradoException("Usuari no trobat"));
+        try {
+            User user = userRepository.findById(userId)
+                    .orElseThrow(() -> new RecursoNoEncontradoException("Usuari no trobat"));
 
-        EstadistiquesResponse stats = new EstadistiquesResponse();
-        stats.setUserId(userId);
-        stats.setNom(user.getNom());
-        stats.setTotalPartides(user.getTotalPartides());
-        stats.setPartidesGuanyades(user.getPartidesGuanyades());
-        stats.setPartidesPerdes(user.getTotalPartides() - user.getPartidesGuanyades());
+            EstadistiquesResponse stats = new EstadistiquesResponse();
+            stats.setUserId(userId);
+            stats.setNom(user.getNom());
+            stats.setTotalPartides(user.getTotalPartides());
+            stats.setPartidesGuanyades(user.getPartidesGuanyades());
+            stats.setPartidesPerdes(user.getTotalPartides() - user.getPartidesGuanyades());
 
-        if (user.getTotalPartides() > 0) {
-            double pct = (double) user.getPartidesGuanyades() / user.getTotalPartides() * 100;
-            stats.setPercentatgeVictories(Math.round(pct * 10.0) / 10.0);
-        } else {
-            stats.setPercentatgeVictories(0);
+            if (user.getTotalPartides() > 0) {
+                double pct = (double) user.getPartidesGuanyades() / user.getTotalPartides() * 100;
+                stats.setPercentatgeVictories(Math.round(pct * 10.0) / 10.0);
+            } else {
+                stats.setPercentatgeVictories(0);
+            }
+
+            int totalReserves = reservaRepository
+                    .findByJugador1IdOrJugador2Id(userId, userId).size();
+            stats.setTotalReserves(totalReserves);
+
+            return stats;
+
+        } catch (RecursoNoEncontradoException e) {
+            throw e;
+        } catch (Exception e) {
+            throw new RuntimeException("Error inesperat en obtenir les estadístiques de l'usuari: " + e.getMessage(), e);
         }
-
-        int totalReserves = reservaRepository
-                .findByJugador1IdOrJugador2Id(userId, userId).size();
-        stats.setTotalReserves(totalReserves);
-
-        return stats;
     }
 }

@@ -31,82 +31,105 @@ public class ResultatServiceImpl implements ResultatService {
 
     @Override
     public ResultatResponse registrarResultat(CrearResultatRequest request) {
-        Reserva reserva = reservaRepository.findById(request.getReservaId())
-                .orElseThrow(() -> new RecursoNoEncontradoException("Reserva no trobada"));
+        try {
+            Reserva reserva = reservaRepository.findById(request.getReservaId())
+                    .orElseThrow(() -> new RecursoNoEncontradoException("Reserva no trobada"));
 
-        if (reserva.getEstat() != Reserva.EstatReserva.CONFIRMADA) {
-            throw new BadRequestException("La reserva ha d'estar confirmada per registrar el resultat");
+            if (reserva.getEstat() != Reserva.EstatReserva.CONFIRMADA) {
+                throw new BadRequestException("La reserva ha d'estar confirmada per registrar el resultat");
+            }
+
+            if (resultatRepository.findByReservaId(request.getReservaId()).isPresent()) {
+                throw new BadRequestException("Ja existeix un resultat per aquesta reserva");
+            }
+
+            Resultat resultat = new Resultat();
+            resultat.setReservaId(request.getReservaId());
+            resultat.setGuanyadorId(request.getGuanyadorId());
+            resultat.setPerdedorId(request.getPerdedorId());
+            resultat.setMarcador(request.getMarcador());
+            resultat.setDataPartida(request.getDataPartida() != null ? request.getDataPartida() : LocalDateTime.now());
+            resultat.setNotes(request.getNotes());
+
+            Resultat saved = resultatRepository.save(resultat);
+
+            userRepository.findById(request.getGuanyadorId()).ifPresent(u -> {
+                u.setTotalPartides(u.getTotalPartides() + 1);
+                u.setPartidesGuanyades(u.getPartidesGuanyades() + 1);
+                userRepository.save(u);
+            });
+            userRepository.findById(request.getPerdedorId()).ifPresent(u -> {
+                u.setTotalPartides(u.getTotalPartides() + 1);
+                userRepository.save(u);
+            });
+
+            reserva.setEstat(Reserva.EstatReserva.COMPLETADA);
+            reservaRepository.save(reserva);
+
+            return toResponse(saved);
+
+        } catch (RecursoNoEncontradoException | BadRequestException e) {
+            throw e;
+        } catch (Exception e) {
+            throw new RuntimeException("Error inesperat en registrar el resultat: " + e.getMessage(), e);
         }
-
-        if (resultatRepository.findByReservaId(request.getReservaId()).isPresent()) {
-            throw new BadRequestException("Ja existeix un resultat per aquesta reserva");
-        }
-
-        Resultat resultat = new Resultat();
-        resultat.setReservaId(request.getReservaId());
-        resultat.setGuanyadorId(request.getGuanyadorId());
-        resultat.setPerdedorId(request.getPerdedorId());
-        resultat.setMarcador(request.getMarcador());
-        resultat.setDataPartida(request.getDataPartida() != null ? request.getDataPartida() : LocalDateTime.now());
-        resultat.setNotes(request.getNotes());
-
-        Resultat saved = resultatRepository.save(resultat);
-
-        // Actualitzar estadístiques
-        userRepository.findById(request.getGuanyadorId()).ifPresent(u -> {
-            u.setTotalPartides(u.getTotalPartides() + 1);
-            u.setPartidesGuanyades(u.getPartidesGuanyades() + 1);
-            userRepository.save(u);
-        });
-        userRepository.findById(request.getPerdedorId()).ifPresent(u -> {
-            u.setTotalPartides(u.getTotalPartides() + 1);
-            userRepository.save(u);
-        });
-
-        // Marcar reserva com COMPLETADA
-        reserva.setEstat(Reserva.EstatReserva.COMPLETADA);
-        reservaRepository.save(reserva);
-
-        return toResponse(saved);
     }
 
     @Override
     public List<ResultatResponse> getHistorialUsuari(String userId) {
-        return resultatRepository.findByGuanyadorIdOrPerdedorId(userId, userId)
-                .stream()
-                .map(this::toResponse)
-                .collect(Collectors.toList());
+        try {
+            return resultatRepository.findByGuanyadorIdOrPerdedorId(userId, userId)
+                    .stream()
+                    .map(this::toResponse)
+                    .collect(Collectors.toList());
+        } catch (Exception e) {
+            throw new RuntimeException("Error en obtenir l'historial de resultats de l'usuari: " + e.getMessage(), e);
+        }
     }
 
     @Override
     public List<ResultatResponse> getTots() {
-        return resultatRepository.findAll().stream()
-                .map(this::toResponse)
-                .collect(Collectors.toList());
+        try {
+            return resultatRepository.findAll().stream()
+                    .map(this::toResponse)
+                    .collect(Collectors.toList());
+        } catch (Exception e) {
+            throw new RuntimeException("Error en obtenir tots els resultats: " + e.getMessage(), e);
+        }
     }
 
     @Override
     public ResultatResponse getById(String id) {
-        Resultat r = resultatRepository.findById(id)
-                .orElseThrow(() -> new RecursoNoEncontradoException("Resultat no trobat"));
-        return toResponse(r);
+        try {
+            Resultat r = resultatRepository.findById(id)
+                    .orElseThrow(() -> new RecursoNoEncontradoException("Resultat no trobat"));
+            return toResponse(r);
+        } catch (RecursoNoEncontradoException e) {
+            throw e;
+        } catch (Exception e) {
+            throw new RuntimeException("Error en obtenir el resultat amb id " + id + ": " + e.getMessage(), e);
+        }
     }
 
     private ResultatResponse toResponse(Resultat r) {
-        ResultatResponse dto = new ResultatResponse();
-        dto.setId(r.getId());
-        dto.setReservaId(r.getReservaId());
-        dto.setGuanyadorId(r.getGuanyadorId());
-        dto.setPerdedorId(r.getPerdedorId());
-        dto.setMarcador(r.getMarcador());
-        dto.setDataPartida(r.getDataPartida());
-        dto.setNotes(r.getNotes());
+        try {
+            ResultatResponse dto = new ResultatResponse();
+            dto.setId(r.getId());
+            dto.setReservaId(r.getReservaId());
+            dto.setGuanyadorId(r.getGuanyadorId());
+            dto.setPerdedorId(r.getPerdedorId());
+            dto.setMarcador(r.getMarcador());
+            dto.setDataPartida(r.getDataPartida());
+            dto.setNotes(r.getNotes());
 
-        userRepository.findById(r.getGuanyadorId())
-                .ifPresent(u -> dto.setNomGuanyador(u.getNom()));
-        userRepository.findById(r.getPerdedorId())
-                .ifPresent(u -> dto.setNomPerdedor(u.getNom()));
+            userRepository.findById(r.getGuanyadorId())
+                    .ifPresent(u -> dto.setNomGuanyador(u.getNom()));
+            userRepository.findById(r.getPerdedorId())
+                    .ifPresent(u -> dto.setNomPerdedor(u.getNom()));
 
-        return dto;
+            return dto;
+        } catch (Exception e) {
+            throw new RuntimeException("Error en convertir el resultat a resposta: " + e.getMessage(), e);
+        }
     }
 }
