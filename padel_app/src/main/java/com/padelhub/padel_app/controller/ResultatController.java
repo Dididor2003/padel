@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+// gestiona els endpoints de resultats: registre de partides jugades i consulta de l'historial
 @RestController
 @RequestMapping("/api/resultats")
 @SecurityRequirement(name = "bearerAuth")
@@ -40,6 +41,7 @@ public class ResultatController {
     @GetMapping("/meus")
     public ResponseEntity<List<ResultatResponse>> getMeusResultats(
             @AuthenticationPrincipal UserDetails userDetails) {
+
         String userId = userService.findByEmail(userDetails.getUsername()).getId();
         return ResponseEntity.ok(resultatService.getHistorialUsuari(userId));
     }

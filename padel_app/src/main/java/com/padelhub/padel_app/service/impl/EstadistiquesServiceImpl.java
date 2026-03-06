@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 @Service
 public class EstadistiquesServiceImpl implements EstadistiquesService {
 
+    // Atributs
     @Autowired
     private UserRepository userRepository;
 
@@ -21,6 +22,7 @@ public class EstadistiquesServiceImpl implements EstadistiquesService {
     @Override
     public EstadistiquesResponse getEstadistiquesUsuari(String userId) {
         try {
+        	
             User user = userRepository.findById(userId)
                     .orElseThrow(() -> new RecursoNoEncontradoException("Usuari no trobat"));
 
@@ -29,6 +31,8 @@ public class EstadistiquesServiceImpl implements EstadistiquesService {
             stats.setNom(user.getNom());
             stats.setTotalPartides(user.getTotalPartides());
             stats.setPartidesGuanyades(user.getPartidesGuanyades());
+
+            // les partides perdudes es calculen restant, no es guarden a la BD ;)
             stats.setPartidesPerdes(user.getTotalPartides() - user.getPartidesGuanyades());
 
             if (user.getTotalPartides() > 0) {
@@ -38,6 +42,7 @@ public class EstadistiquesServiceImpl implements EstadistiquesService {
                 stats.setPercentatgeVictories(0);
             }
 
+            // compta totes les reserves on l'usuari és jugador1 o jugador2
             int totalReserves = reservaRepository
                     .findByJugador1IdOrJugador2Id(userId, userId).size();
             stats.setTotalReserves(totalReserves);
@@ -46,8 +51,10 @@ public class EstadistiquesServiceImpl implements EstadistiquesService {
 
         } catch (RecursoNoEncontradoException e) {
             throw e;
+
         } catch (Exception e) {
             throw new RuntimeException("Error inesperat en obtenir les estadístiques de l'usuari: " + e.getMessage(), e);
+
         }
     }
 }

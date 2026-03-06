@@ -17,6 +17,7 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.web.bind.annotation.*;
 
+// gestiona els dos endpoints públics de tota l'API
 @RestController
 @RequestMapping("/auth")
 @Tag(name = "Autenticació", description = "Endpoints públics de login i registre")
@@ -49,6 +50,8 @@ public class AuthController {
     @Operation(summary = "Registre de nou usuari")
     @PostMapping("/register")
     public ResponseEntity<UserResponse> register(@Valid @RequestBody RegisterRequest request) {
+    	
         return ResponseEntity.status(HttpStatus.CREATED).body(userService.registrar(request));
+        
     }
 }

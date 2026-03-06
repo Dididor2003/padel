@@ -19,6 +19,7 @@ import java.util.stream.Collectors;
 @Service
 public class PistaServiceImpl implements PistaService {
 
+    // Atributs
     @Autowired
     private PistaRepository pistaRepository;
 
@@ -42,8 +43,10 @@ public class PistaServiceImpl implements PistaService {
 
         } catch (BadRequestException e) {
             throw e;
+
         } catch (Exception e) {
             throw new RuntimeException("Error inesperat en crear la pista: " + e.getMessage(), e);
+
         }
     }
 
@@ -53,8 +56,10 @@ public class PistaServiceImpl implements PistaService {
             return pistaRepository.findAll().stream()
                     .map(this::toResponse)
                     .collect(Collectors.toList());
+
         } catch (Exception e) {
             throw new RuntimeException("Error en obtenir la llista de pistes: " + e.getMessage(), e);
+
         }
     }
 
@@ -64,8 +69,10 @@ public class PistaServiceImpl implements PistaService {
             return pistaRepository.findByDisponibleTrue().stream()
                     .map(this::toResponse)
                     .collect(Collectors.toList());
+
         } catch (Exception e) {
             throw new RuntimeException("Error en obtenir les pistes disponibles: " + e.getMessage(), e);
+
         }
     }
 
@@ -75,10 +82,13 @@ public class PistaServiceImpl implements PistaService {
             Pista pista = pistaRepository.findById(id)
                     .orElseThrow(() -> new RecursoNoEncontradoException("Pista no trobada"));
             return toResponse(pista);
+
         } catch (RecursoNoEncontradoException e) {
             throw e;
+
         } catch (Exception e) {
             throw new RuntimeException("Error en obtenir la pista amb id " + id + ": " + e.getMessage(), e);
+
         }
     }
 
@@ -91,10 +101,13 @@ public class PistaServiceImpl implements PistaService {
             pista.setTipus(request.getTipus());
             pista.setDescripcio(request.getDescripcio());
             return toResponse(pistaRepository.save(pista));
+
         } catch (RecursoNoEncontradoException e) {
             throw e;
+
         } catch (Exception e) {
             throw new RuntimeException("Error en actualitzar la pista: " + e.getMessage(), e);
+
         }
     }
 
@@ -104,11 +117,15 @@ public class PistaServiceImpl implements PistaService {
             if (!pistaRepository.existsById(id)) {
                 throw new RecursoNoEncontradoException("Pista no trobada");
             }
+
             pistaRepository.deleteById(id);
+
         } catch (RecursoNoEncontradoException e) {
             throw e;
+
         } catch (Exception e) {
             throw new RuntimeException("Error en eliminar la pista: " + e.getMessage(), e);
+
         }
     }
 
@@ -127,8 +144,10 @@ public class PistaServiceImpl implements PistaService {
                     })
                     .map(this::toResponse)
                     .collect(Collectors.toList());
+
         } catch (Exception e) {
             throw new RuntimeException("Error en obtenir les pistes disponibles per l'horari indicat: " + e.getMessage(), e);
+
         }
     }
 
@@ -141,8 +160,10 @@ public class PistaServiceImpl implements PistaService {
             dto.setDisponible(pista.isDisponible());
             dto.setDescripcio(pista.getDescripcio());
             return dto;
+
         } catch (Exception e) {
             throw new RuntimeException("Error en convertir la pista a resposta: " + e.getMessage(), e);
+
         }
     }
 }

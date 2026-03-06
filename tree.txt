@@ -1,0 +1,211 @@
+* commit 9cd08223cb6b6d6faf5234197edd721998863ef6 (HEAD -> master, origin/master, origin/HEAD)
+| Author: Dididor <diquese03@gmail.com>
+| Date:   Mon Mar 2 20:36:54 2026 +0100
+| 
+|     README.md
+|     
+|     Establish commit norms for project version control.
+| 
+* commit bc878c4e76d70849ecb7a93491f88f8e5938ed08
+| Author: Dididor2003 <diquese03@gmail.com>
+| Date:   Mon Mar 2 20:23:31 2026 +0100
+| 
+|     ajustos en pom i properties + conn a mongodb
+| 
+* commit 39ae3e501311c393831e87ff025649ec9574569e
+| Author: adamone <adamespilla@gmail.com>
+| Date:   Sat Feb 28 12:51:08 2026 +0100
+| 
+|     EstadistiquesController implementat
+| 
+* commit 989cc134d061b5e115b3805b69d24dcb9eeb617b
+| Author: Dididor2003 <diquese03@gmail.com>
+| Date:   Sat Feb 28 12:22:43 2026 +0100
+| 
+|     ResultatController implementat
+| 
+* commit c6e66714df892bb8a1012f7e0ba5d93197de5f37
+| Author: adamone <adamespilla@gmail.com>
+| Date:   Sat Feb 28 11:48:14 2026 +0100
+| 
+|     ReservaController implementat
+| 
+* commit 15acd7d7077ac46e79aceef9c9edf4a65da7506d
+| Author: Dididor2003 <diquese03@gmail.com>
+| Date:   Sat Feb 28 11:17:29 2026 +0100
+| 
+|     PistaController implementat
+| 
+* commit 201c0f00f4292cf3ab84332df2837edad2f1b424
+| Author: adamone <adamespilla@gmail.com>
+| Date:   Sat Feb 28 10:43:52 2026 +0100
+| 
+|     UserController implementat
+| 
+* commit 69966ded00856d6bf2971db1b4314c243e1ca95c
+| Author: Dididor2003 <diquese03@gmail.com>
+| Date:   Sat Feb 28 10:14:37 2026 +0100
+| 
+|     AuthController implementat
+| 
+* commit 70949e008a92c5c0c7936c951021dbd3e217c17c
+| Author: adamone <adamespilla@gmail.com>
+| Date:   Wed Feb 25 17:58:31 2026 +0100
+| 
+|     implementacions ResultatServiceImpl i EstadistiquesServiceImpl creades
+| 
+* commit 19d26318b40de37b9c61409cfb20e0df354bd07f
+| Author: Dididor2003 <diquese03@gmail.com>
+| Date:   Wed Feb 25 17:44:09 2026 +0100
+| 
+|     implementacions PistaServiceImpl i ReservaServiceImpl creades
+| 
+* commit 88680d90c68cef950d3b3cd91aa75bd8c075215d
+| Author: adamone <adamespilla@gmail.com>
+| Date:   Wed Feb 25 17:21:38 2026 +0100
+| 
+|     implementació UserServiceImpl creada
+| 
+* commit 57c3d9fc1ac59abab534d5351fb396f715d5ec75
+| Author: Dididor2003 <diquese03@gmail.com>
+| Date:   Wed Feb 25 16:58:13 2026 +0100
+| 
+|     interfícies ResultatService i EstadistiquesService creades
+| 
+* commit 8051d251a02cef974ce1417adf480d8ac7cd0fee
+| Author: adamone <adamespilla@gmail.com>
+| Date:   Wed Feb 25 16:34:47 2026 +0100
+| 
+|     interfícies PistaService i ReservaService creades
+| 
+* commit 3f454ddfdc161147a17538fb4fdcfadd60c819be
+| Author: Dididor2003 <diquese03@gmail.com>
+| Date:   Wed Feb 25 16:09:22 2026 +0100
+| 
+|     interfície UserService creada
+| 
+* commit 17648d75962249d69828ca679a48a5333929f982
+| Author: Dididor2003 <diquese03@gmail.com>
+| Date:   Tue Feb 24 20:09:47 2026 +0100
+| 
+|     DTOs de response creats
+| 
+* commit 2abb0771a44e58a00d9b7bbe7bfac9784f76eeb2
+| Author: adamone <adamespilla@gmail.com>
+| Date:   Tue Feb 24 19:48:33 2026 +0100
+| 
+|     DTOs de request per pista, reserva i resultat creats
+| 
+* commit bf6752977e082399de36a8a3a42008579e31b8f1
+| Author: Dididor2003 <diquese03@gmail.com>
+| Date:   Tue Feb 24 19:27:14 2026 +0100
+| 
+|     DTOs de request per auth creats
+| 
+* commit 53d046c151e4da38b04c01cc316f61724f9c5377
+| Author: Dididor2003 <diquese03@gmail.com>
+| Date:   Mon Feb 23 18:57:49 2026 +0100
+| 
+|     ajustos de configuració generals
+| 
+* commit 5ec233e8b5d31c3d051c272ef62db7254e33add2
+| Author: adamone <adamespilla@gmail.com>
+| Date:   Mon Feb 23 18:19:37 2026 +0100
+| 
+|     revisió dels repositoris i excepcions
+| 
+* commit ecee526dd40c4758ae73067cf5acc113406900e9
+| Author: Dididor2003 <diquese03@gmail.com>
+| Date:   Mon Feb 23 17:41:22 2026 +0100
+| 
+|     revisió i neteja dels models
+| 
+* commit abf7ee1e6791bdc92b0ffdd92795a44f1f120a1d
+| Author: adamone <adamespilla@gmail.com>
+| Date:   Mon Feb 23 17:08:43 2026 +0100
+| 
+|     configuració MongoDB a application.properties
+| 
+* commit 72c848df4acbc3e70b87b67d740f1c500a0a450c
+| Author: Dididor2003 <diquese03@gmail.com>
+| Date:   Wed Feb 18 17:12:07 2026 +0100
+| 
+|     SecurityConfig i UsuarioDetailsService afegits
+| 
+* commit 55ff09f488f0545d61ce4ee0a65b11766b9e99a4
+| Author: adamone <adamespilla@gmail.com>
+| Date:   Wed Feb 18 16:38:54 2026 +0100
+| 
+|     JwtFilter implementat
+| 
+* commit 808502da990e7a36d253e86418045fd7fd03cb87
+| Author: Dididor2003 <diquese03@gmail.com>
+| Date:   Wed Feb 18 16:07:29 2026 +0100
+| 
+|     estructura de seguretat iniciada - JwtUtils
+| 
+* commit 914b5a20a66f382b12dafb0af8cd00fdb16d3ba3
+| Author: adamone <adamespilla@gmail.com>
+| Date:   Tue Feb 17 19:54:12 2026 +0100
+| 
+|     SwaggerConfig afegit
+| 
+* commit 6dc5cc4c79cde7bb27511bc2a9ab2028a034aaa4
+| Author: Dididor2003 <diquese03@gmail.com>
+| Date:   Tue Feb 17 19:26:38 2026 +0100
+| 
+|     GlobalExceptionHandler implementat
+| 
+* commit 6b786d77cfe772cad61e9efde0d0d3f276f99825
+| Author: adamone <adamespilla@gmail.com>
+| Date:   Mon Feb 16 19:07:14 2026 +0100
+| 
+|     excepció RecursoNoEncontradoException creada
+| 
+* commit 626ef3b31cdb28cf3fd52cdb6736c15ac164839c
+| Author: Dididor2003 <diquese03@gmail.com>
+| Date:   Mon Feb 16 18:43:58 2026 +0100
+| 
+|     excepció BadRequestException creada
+| 
+* commit b229c03785931d67107d7ad1c7c1f966fbb4494f
+| Author: adamone <adamespilla@gmail.com>
+| Date:   Mon Feb 16 18:04:31 2026 +0100
+| 
+|     repositori ResultatRepository implementat
+| 
+* commit a4c9185f7ac70e1b86814aae139b0af225316001
+| Author: Dididor2003 <diquese03@gmail.com>
+| Date:   Mon Feb 16 17:39:47 2026 +0100
+| 
+|     repositoris PistaRepository i ReservaRepository implementats
+| 
+* commit d1c3b09ece434f0d474e8e528eddcd9d7c43f8a6
+| Author: adamone <adamespilla@gmail.com>
+| Date:   Mon Feb 16 17:11:23 2026 +0100
+| 
+|     repositori UserRepository implementat
+| 
+* commit b286ec9ca87f045f6876316913fe467868dd161b
+| Author: Dididor2003 <diquese03@gmail.com>
+| Date:   Tue Feb 10 20:08:47 2026 +0100
+| 
+|     creats models User, Pista, Reserva i Resultat
+| 
+* commit 25ce361b0611185056590106134725870603608d
+| Author: adamone <adamespilla@gmail.com>
+| Date:   Tue Feb 10 19:51:09 2026 +0100
+| 
+|     classe principal PadelAppApplication creada
+| 
+* commit 7c76c5340c45a64173b894a80dc4efdb4430e7de
+| Author: Dididor2003 <diquese03@gmail.com>
+| Date:   Tue Feb 10 19:33:27 2026 +0100
+| 
+|     estructura inicial del projecte i pom.xml
+| 
+* commit f47b8dbc7ed22545892322ea195135f8c7ff1e87
+  Author: Dididor2003 <diquese03@gmail.com>
+  Date:   Tue Feb 10 19:13:23 2026 +0100
+  
+      primer cooommiiiit

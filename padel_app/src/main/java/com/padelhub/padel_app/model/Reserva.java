@@ -8,10 +8,11 @@ import java.time.LocalDateTime;
 @Document(collection = "reserves")
 public class Reserva {
 
+	// Atributs
     @Id
     private String id;
 
-    private String pistaId;       // Referència a Pista
+    private String pistaId;
 
     private LocalDateTime dataHora;
 
@@ -33,29 +34,72 @@ public class Reserva {
         CANCEL_LADA
     }
 
+    // Constructor
     public Reserva() {}
 
-    public String getId() { return id; }
-    public void setId(String id) { this.id = id; }
+    // Getters & Setters
+    public String getId() { 
+    	return id; 
+    }
+    
+    public void setId(String id) { 
+    	this.id = id; 
+    }
 
-    public String getPistaId() { return pistaId; }
-    public void setPistaId(String pistaId) { this.pistaId = pistaId; }
+    public String getPistaId() { 
+    	return pistaId; 
+    }
+    
+    public void setPistaId(String pistaId) { 
+    	this.pistaId = pistaId; 
+    }
 
-    public LocalDateTime getDataHora() { return dataHora; }
-    public void setDataHora(LocalDateTime dataHora) { this.dataHora = dataHora; }
+    public LocalDateTime getDataHora() { 
+    	return dataHora; 
+    }
+    
+    public void setDataHora(LocalDateTime dataHora) { 
+    	this.dataHora = dataHora; 
+    }
 
-    public int getDuracioMinuts() { return duracioMinuts; }
-    public void setDuracioMinuts(int duracioMinuts) { this.duracioMinuts = duracioMinuts; }
+    public int getDuracioMinuts() { 
+    	return duracioMinuts; 
+    }
+    
+    public void setDuracioMinuts(int duracioMinuts) { 
+    	this.duracioMinuts = duracioMinuts; 
+    }
 
-    public String getJugador1Id() { return jugador1Id; }
-    public void setJugador1Id(String jugador1Id) { this.jugador1Id = jugador1Id; }
+    public String getJugador1Id() { 
+    	return jugador1Id; 
+    }
+    
+    public void setJugador1Id(String jugador1Id) { 
+    	this.jugador1Id = jugador1Id; 
+    }
 
-    public String getJugador2Id() { return jugador2Id; }
-    public void setJugador2Id(String jugador2Id) { this.jugador2Id = jugador2Id; }
+    public String getJugador2Id() { 
+    	return jugador2Id; 
+    }
+    
+    public void setJugador2Id(String jugador2Id) { 
+    	this.jugador2Id = jugador2Id; 
+    }
 
-    public EstatReserva getEstat() { return estat; }
-    public void setEstat(EstatReserva estat) { this.estat = estat; }
+    public EstatReserva getEstat() { 
+    	return estat; 
+    }
+    
+    public void setEstat(EstatReserva estat) { 
+    	this.estat = estat; 
+    }
 
-    public LocalDateTime getDataCreacio() { return dataCreacio; }
-    public void setDataCreacio(LocalDateTime dataCreacio) { this.dataCreacio = dataCreacio; }
+    public LocalDateTime getDataCreacio() { 
+    	return dataCreacio; 
+    }
+    
+    public void setDataCreacio(LocalDateTime dataCreacio) { 
+    	this.dataCreacio = dataCreacio; 
+    }
+    
 }

@@ -20,6 +20,7 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 import java.util.List;
 
+// classe central de seguretatonfigura qui pot accedir a què i com funciona la seguretat de tota l'API
 @Configuration
 @EnableWebSecurity
 @EnableMethodSecurity
@@ -31,8 +32,9 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
-            .csrf(csrf -> csrf.disable())
+            .csrf(csrf -> csrf.disable()) // protecció per a formularis web
             .cors(cors -> cors.configurationSource(corsConfigurationSource()))
+            // regles d'accés al endpoint
             .authorizeHttpRequests(auth -> auth
                 .requestMatchers("/auth/**").permitAll()
                 .requestMatchers(
@@ -49,9 +51,11 @@ public class SecurityConfig {
                 .requestMatchers(HttpMethod.DELETE, "/api/users/**").hasRole("ADMIN")
                 .anyRequest().authenticated()
             )
+            // no guarda sessions al servidor
             .sessionManagement(session ->
                 session.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
             )
+            // posa el nostre JwtFilter abans del filtre estandard de Spring
             .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
 
         return http.build();
@@ -59,7 +63,7 @@ public class SecurityConfig {
 
     @Bean
     public PasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder();
+        return new BCryptPasswordEncoder(); // defineix que les contrasenyes es xifren amb BCrypt
     }
 
     @Bean
@@ -68,6 +72,9 @@ public class SecurityConfig {
         return config.getAuthenticationManager();
     }
 
+    // PER FUTUR ->
+    //		Permet que el frontend Angular (localhost:4200) pugui fer peticions a l'API. 
+    // 		Sense això, el navegador bloquejaria les peticions per política CORS.
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration config = new CorsConfiguration();

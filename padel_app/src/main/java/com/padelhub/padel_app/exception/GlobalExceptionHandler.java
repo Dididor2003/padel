@@ -13,9 +13,11 @@ import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.Map;
 
-@RestControllerAdvice
+//aquesta classe intercepta les excepcions que llencin els controllers i torna la resposta al client
+@RestControllerAdvice 
 public class GlobalExceptionHandler {
 
+	// helper constructor de JSONs
     private Map<String, Object> buildError(String missatge, HttpStatus status) {
         Map<String, Object> body = new HashMap<>();
         body.put("timestamp", LocalDateTime.now().toString());
@@ -25,18 +27,21 @@ public class GlobalExceptionHandler {
         return body;
     }
 
+    // 404
     @ExceptionHandler(RecursoNoEncontradoException.class)
     public ResponseEntity<Map<String, Object>> handleNotFound(RecursoNoEncontradoException ex) {
         return ResponseEntity.status(HttpStatus.NOT_FOUND)
                 .body(buildError(ex.getMessage(), HttpStatus.NOT_FOUND));
     }
 
+    // 400
     @ExceptionHandler(BadRequestException.class)
     public ResponseEntity<Map<String, Object>> handleBadRequest(BadRequestException ex) {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST)
                 .body(buildError(ex.getMessage(), HttpStatus.BAD_REQUEST));
     }
 
+    // 400 amb detall
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<Map<String, Object>> handleValidation(MethodArgumentNotValidException ex) {
         Map<String, Object> errors = new HashMap<>();
@@ -52,18 +57,21 @@ public class GlobalExceptionHandler {
         return ResponseEntity.badRequest().body(errors);
     }
 
+    // 401
     @ExceptionHandler(BadCredentialsException.class)
     public ResponseEntity<Map<String, Object>> handleBadCredentials(BadCredentialsException ex) {
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
                 .body(buildError("Email o contrasenya incorrectes", HttpStatus.UNAUTHORIZED));
     }
 
+    // 403
     @ExceptionHandler(AccessDeniedException.class)
     public ResponseEntity<Map<String, Object>> handleAccessDenied(AccessDeniedException ex) {
         return ResponseEntity.status(HttpStatus.FORBIDDEN)
                 .body(buildError("No tens permisos per accedir a aquest recurs", HttpStatus.FORBIDDEN));
     }
 
+    // 500
     @ExceptionHandler(Exception.class)
     public ResponseEntity<Map<String, Object>> handleGeneral(Exception ex) {
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)

@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+// gestiona els endpoints de reserves: creació amb o sense assignació automàtica, consulta i cancel·lació
 @RestController
 @RequestMapping("/api/reserves")
 @SecurityRequirement(name = "bearerAuth")
@@ -36,14 +37,16 @@ public class ReservaController {
     public ResponseEntity<ReservaResponse> crearReserva(
             @Valid @RequestBody CrearReservaRequest request,
             @AuthenticationPrincipal UserDetails userDetails) {
+
+        // passa l'email del token perquè el servei sepa qui és el jugador1
         return ResponseEntity.status(HttpStatus.CREATED)
                 .body(reservaService.crearReserva(request, userDetails.getUsername()));
     }
 
     @Operation(summary = "Obtenir les meves reserves")
     @GetMapping("/meves")
-    public ResponseEntity<List<ReservaResponse>> getMevesReserves(
-            @AuthenticationPrincipal UserDetails userDetails) {
+    public ResponseEntity<List<ReservaResponse>> getMevesReserves(@AuthenticationPrincipal UserDetails userDetails) {
+
         String userId = userService.findByEmail(userDetails.getUsername()).getId();
         return ResponseEntity.ok(reservaService.getHistorialUsuari(userId));
     }
@@ -56,9 +59,9 @@ public class ReservaController {
 
     @Operation(summary = "Cancel·lar una reserva")
     @DeleteMapping("/{id}")
-    public ResponseEntity<ReservaResponse> cancellar(
-            @PathVariable String id,
-            @AuthenticationPrincipal UserDetails userDetails) {
+    public ResponseEntity<ReservaResponse> cancellar(@PathVariable String id, @AuthenticationPrincipal UserDetails userDetails) {
+
+        // el servei comprova internament si l'usuari és admin o és un dels jugadors de la reserva
         return ResponseEntity.ok(reservaService.cancellar(id, userDetails.getUsername()));
     }
 

@@ -20,6 +20,7 @@ import java.util.stream.Collectors;
 @Service
 public class ResultatServiceImpl implements ResultatService {
 
+    // Atributs
     @Autowired
     private ResultatRepository resultatRepository;
 
@@ -35,10 +36,12 @@ public class ResultatServiceImpl implements ResultatService {
             Reserva reserva = reservaRepository.findById(request.getReservaId())
                     .orElseThrow(() -> new RecursoNoEncontradoException("Reserva no trobada"));
 
+            // només es pot registrar resultat si la reserva està confirmada
             if (reserva.getEstat() != Reserva.EstatReserva.CONFIRMADA) {
                 throw new BadRequestException("La reserva ha d'estar confirmada per registrar el resultat");
             }
 
+            // evita duplicats perque una reserva només pot tenir un resultat
             if (resultatRepository.findByReservaId(request.getReservaId()).isPresent()) {
                 throw new BadRequestException("Ja existeix un resultat per aquesta reserva");
             }
@@ -53,16 +56,20 @@ public class ResultatServiceImpl implements ResultatService {
 
             Resultat saved = resultatRepository.save(resultat);
 
+            // actualitza les estadístiques del guanyador
             userRepository.findById(request.getGuanyadorId()).ifPresent(u -> {
                 u.setTotalPartides(u.getTotalPartides() + 1);
                 u.setPartidesGuanyades(u.getPartidesGuanyades() + 1);
                 userRepository.save(u);
             });
+
+            // actualitza les estadístiques del perdedor
             userRepository.findById(request.getPerdedorId()).ifPresent(u -> {
                 u.setTotalPartides(u.getTotalPartides() + 1);
                 userRepository.save(u);
             });
 
+            // marca la reserva com a completada
             reserva.setEstat(Reserva.EstatReserva.COMPLETADA);
             reservaRepository.save(reserva);
 
@@ -70,8 +77,10 @@ public class ResultatServiceImpl implements ResultatService {
 
         } catch (RecursoNoEncontradoException | BadRequestException e) {
             throw e;
+
         } catch (Exception e) {
             throw new RuntimeException("Error inesperat en registrar el resultat: " + e.getMessage(), e);
+
         }
     }
 
@@ -82,35 +91,45 @@ public class ResultatServiceImpl implements ResultatService {
                     .stream()
                     .map(this::toResponse)
                     .collect(Collectors.toList());
+
         } catch (Exception e) {
             throw new RuntimeException("Error en obtenir l'historial de resultats de l'usuari: " + e.getMessage(), e);
+
         }
     }
 
     @Override
     public List<ResultatResponse> getTots() {
+    	
         try {
             return resultatRepository.findAll().stream()
                     .map(this::toResponse)
                     .collect(Collectors.toList());
+
         } catch (Exception e) {
             throw new RuntimeException("Error en obtenir tots els resultats: " + e.getMessage(), e);
+
         }
     }
 
     @Override
     public ResultatResponse getById(String id) {
+    	
         try {
             Resultat r = resultatRepository.findById(id)
                     .orElseThrow(() -> new RecursoNoEncontradoException("Resultat no trobat"));
             return toResponse(r);
+
         } catch (RecursoNoEncontradoException e) {
             throw e;
+
         } catch (Exception e) {
             throw new RuntimeException("Error en obtenir el resultat amb id " + id + ": " + e.getMessage(), e);
+
         }
     }
 
+    // omple els noms del guanyador i perdedor fent consultes addicionals a userRepository
     private ResultatResponse toResponse(Resultat r) {
         try {
             ResultatResponse dto = new ResultatResponse();
@@ -124,12 +143,15 @@ public class ResultatServiceImpl implements ResultatService {
 
             userRepository.findById(r.getGuanyadorId())
                     .ifPresent(u -> dto.setNomGuanyador(u.getNom()));
+
             userRepository.findById(r.getPerdedorId())
                     .ifPresent(u -> dto.setNomPerdedor(u.getNom()));
 
             return dto;
+
         } catch (Exception e) {
             throw new RuntimeException("Error en convertir el resultat a resposta: " + e.getMessage(), e);
+
         }
     }
 }

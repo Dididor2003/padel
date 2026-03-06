@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.*;
 import java.time.LocalDateTime;
 import java.util.List;
 
+// gestiona els endpoints de les pistes: consulta pública i operacions d'admin
 @RestController
 @RequestMapping("/api/pistes")
 @SecurityRequirement(name = "bearerAuth")
@@ -40,6 +41,7 @@ public class PistaController {
 
     @Operation(summary = "Consultar pistes disponibles en un horari concret")
     @GetMapping("/disponibles/horari")
+    
     public ResponseEntity<List<PistaResponse>> getPistesPerHorari(
             @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime dataHora,
             @RequestParam(defaultValue = "60") int duracioMinuts) {
@@ -62,8 +64,7 @@ public class PistaController {
     @Operation(summary = "[ADMIN] Actualitzar una pista")
     @PutMapping("/{id}")
     @PreAuthorize("hasRole('ADMIN')")
-    public ResponseEntity<PistaResponse> actualitzar(@PathVariable String id,
-                                                      @Valid @RequestBody CrearPistaRequest request) {
+    public ResponseEntity<PistaResponse> actualitzar(@PathVariable String id, @Valid @RequestBody CrearPistaRequest request) {
         return ResponseEntity.ok(pistaService.actualitzar(id, request));
     }
 

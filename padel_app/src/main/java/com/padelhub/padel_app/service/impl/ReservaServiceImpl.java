@@ -22,6 +22,7 @@ import java.util.stream.Collectors;
 @Service
 public class ReservaServiceImpl implements ReservaService {
 
+    // Atributs
     @Autowired
     private ReservaRepository reservaRepository;
 
@@ -34,6 +35,7 @@ public class ReservaServiceImpl implements ReservaService {
     @Override
     public ReservaResponse crearReserva(CrearReservaRequest request, String emailJugador1) {
         try {
+        	
             User jugador1 = userRepository.findByEmail(emailJugador1)
                     .orElseThrow(() -> new RecursoNoEncontradoException("Usuari no trobat"));
 
@@ -54,6 +56,8 @@ public class ReservaServiceImpl implements ReservaService {
             reserva.setDataCreacio(LocalDateTime.now());
 
             if (request.isAssignacioAutomatica()) {
+
+                // busca si hay alguna reserva esperant parella per al mateix horari i pista
                 Optional<Reserva> parelaEsperant = reservaRepository
                         .findByEstat(Reserva.EstatReserva.ESPERANT_PARELLA)
                         .stream()
@@ -63,6 +67,8 @@ public class ReservaServiceImpl implements ReservaService {
                         .findFirst();
 
                 if (parelaEsperant.isPresent()) {
+
+                    // actualitza la reserva existent i es confirma
                     Reserva reservaExistent = parelaEsperant.get();
                     reservaExistent.setJugador2Id(jugador1.getId());
                     reservaExistent.setEstat(Reserva.EstatReserva.CONFIRMADA);
@@ -74,18 +80,25 @@ public class ReservaServiceImpl implements ReservaService {
                     });
 
                     return toResponse(reservaExistent);
+
                 } else {
+
+                    // no hi ha parella disponible: la reserva queda en espera
                     reserva.setEstat(Reserva.EstatReserva.ESPERANT_PARELLA);
                     jugador1.setEsperantParella(true);
                     userRepository.save(jugador1);
+
                 }
 
             } else if (request.getJugador2Id() != null && !request.getJugador2Id().isEmpty()) {
+
                 if (!userRepository.existsById(request.getJugador2Id())) {
                     throw new RecursoNoEncontradoException("El segon jugador no existeix");
                 }
+
                 reserva.setJugador2Id(request.getJugador2Id());
                 reserva.setEstat(Reserva.EstatReserva.CONFIRMADA);
+
             } else {
                 reserva.setEstat(Reserva.EstatReserva.PENDENT);
             }
@@ -94,13 +107,15 @@ public class ReservaServiceImpl implements ReservaService {
 
         } catch (RecursoNoEncontradoException | BadRequestException e) {
             throw e;
+
         } catch (Exception e) {
             throw new RuntimeException("Error inesperat en crear la reserva: " + e.getMessage(), e);
+
         }
     }
 
-    private void comprovarDisponibilitat(String pistaId, LocalDateTime dataHora,
-                                          int duracio, String reservaIdExcloure) {
+    private void comprovarDisponibilitat(String pistaId, LocalDateTime dataHora, int duracio, String reservaIdExcloure) {
+    	
         try {
             LocalDateTime fi = dataHora.plusMinutes(duracio);
             List<Reserva> conflictes = reservaRepository
@@ -113,10 +128,13 @@ public class ReservaServiceImpl implements ReservaService {
             if (!conflictes.isEmpty()) {
                 throw new BadRequestException("La pista no està disponible en aquell horari");
             }
+
         } catch (BadRequestException e) {
             throw e;
+
         } catch (Exception e) {
             throw new RuntimeException("Error en comprovar la disponibilitat de la pista: " + e.getMessage(), e);
+
         }
     }
 
@@ -127,8 +145,10 @@ public class ReservaServiceImpl implements ReservaService {
                     .stream()
                     .map(this::toResponse)
                     .collect(Collectors.toList());
+
         } catch (Exception e) {
             throw new RuntimeException("Error en obtenir l'historial de l'usuari: " + e.getMessage(), e);
+
         }
     }
 
@@ -138,8 +158,10 @@ public class ReservaServiceImpl implements ReservaService {
             return reservaRepository.findAll().stream()
                     .map(this::toResponse)
                     .collect(Collectors.toList());
+
         } catch (Exception e) {
             throw new RuntimeException("Error en obtenir totes les reserves: " + e.getMessage(), e);
+
         }
     }
 
@@ -149,10 +171,13 @@ public class ReservaServiceImpl implements ReservaService {
             Reserva r = reservaRepository.findById(id)
                     .orElseThrow(() -> new RecursoNoEncontradoException("Reserva no trobada"));
             return toResponse(r);
+
         } catch (RecursoNoEncontradoException e) {
             throw e;
+
         } catch (Exception e) {
             throw new RuntimeException("Error en obtenir la reserva amb id " + id + ": " + e.getMessage(), e);
+
         }
     }
 
@@ -173,6 +198,7 @@ public class ReservaServiceImpl implements ReservaService {
                 throw new BadRequestException("No tens permisos per cancel·lar aquesta reserva");
             }
 
+            // si la reserva estava esperant parella, libera l'estat de l'usuari
             if (reserva.getEstat() == Reserva.EstatReserva.ESPERANT_PARELLA) {
                 userRepository.findById(reserva.getJugador1Id()).ifPresent(u -> {
                     u.setEsperantParella(false);
@@ -185,12 +211,16 @@ public class ReservaServiceImpl implements ReservaService {
 
         } catch (RecursoNoEncontradoException | BadRequestException e) {
             throw e;
+
         } catch (Exception e) {
             throw new RuntimeException("Error en cancel·lar la reserva: " + e.getMessage(), e);
+
         }
     }
 
+    // a més dels camps bàsics, omple els noms de la pista i dels jugadors fent consultes addicionals
     private ReservaResponse toResponse(Reserva r) {
+    	
         try {
             ReservaResponse dto = new ReservaResponse();
             dto.setId(r.getId());
@@ -207,13 +237,17 @@ public class ReservaServiceImpl implements ReservaService {
 
             userRepository.findById(r.getJugador1Id())
                     .ifPresent(u -> dto.setNomJugador1(u.getNom()));
+
             if (r.getJugador2Id() != null) {
                 userRepository.findById(r.getJugador2Id())
                         .ifPresent(u -> dto.setNomJugador2(u.getNom()));
             }
+
             return dto;
+
         } catch (Exception e) {
             throw new RuntimeException("Error en convertir la reserva a resposta: " + e.getMessage(), e);
+
         }
     }
 }

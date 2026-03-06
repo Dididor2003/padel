@@ -1,7 +1,9 @@
 package com.padelhub.padel_app.exception;
 
 public class RecursoNoEncontradoException extends RuntimeException {
-    public RecursoNoEncontradoException(String message) {
+    
+	public RecursoNoEncontradoException(String message) {
         super(message);
     }
+	
 }

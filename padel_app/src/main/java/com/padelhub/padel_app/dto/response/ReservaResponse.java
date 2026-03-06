@@ -4,8 +4,10 @@ import com.padelhub.padel_app.model.Reserva;
 
 import java.time.LocalDateTime;
 
+// retorna tota la informació d'una reserva al client
 public class ReservaResponse {
 
+	// Atributs
     private String id;
     private String pistaId;
     private String nomPista;
@@ -18,38 +20,95 @@ public class ReservaResponse {
     private Reserva.EstatReserva estat;
     private LocalDateTime dataCreacio;
 
+    // Constructor
     public ReservaResponse() {}
 
-    public String getId() { return id; }
-    public void setId(String id) { this.id = id; }
+    // Getters & Setters
+    public String getId() { 
+    	return id; 
+    }
+    
+    public void setId(String id) { 
+    	this.id = id; 
+    }
 
-    public String getPistaId() { return pistaId; }
-    public void setPistaId(String pistaId) { this.pistaId = pistaId; }
+    public String getPistaId() { 
+    	return pistaId;
+    }
+    
+    public void setPistaId(String pistaId) { 
+    	this.pistaId = pistaId;
+    }
 
-    public String getNomPista() { return nomPista; }
-    public void setNomPista(String nomPista) { this.nomPista = nomPista; }
+    public String getNomPista() { 
+    	return nomPista;
+    }
+    
+    public void setNomPista(String nomPista) { 
+    	this.nomPista = nomPista; 
+    }
 
-    public LocalDateTime getDataHora() { return dataHora; }
-    public void setDataHora(LocalDateTime dataHora) { this.dataHora = dataHora; }
+    public LocalDateTime getDataHora() { 
+    	return dataHora; 
+    }
+    
+    public void setDataHora(LocalDateTime dataHora) { 
+    	this.dataHora = dataHora; 
+    }
 
-    public int getDuracioMinuts() { return duracioMinuts; }
-    public void setDuracioMinuts(int duracioMinuts) { this.duracioMinuts = duracioMinuts; }
+    public int getDuracioMinuts() { 
+    	return duracioMinuts; 
+    }
+    
+    public void setDuracioMinuts(int duracioMinuts) { 
+    	this.duracioMinuts = duracioMinuts; 
+    }
 
-    public String getJugador1Id() { return jugador1Id; }
-    public void setJugador1Id(String jugador1Id) { this.jugador1Id = jugador1Id; }
+    public String getJugador1Id() { 
+    	return jugador1Id; 
+    }
+    
+    public void setJugador1Id(String jugador1Id) { 
+    	this.jugador1Id = jugador1Id; 
+    }
 
-    public String getNomJugador1() { return nomJugador1; }
-    public void setNomJugador1(String nomJugador1) { this.nomJugador1 = nomJugador1; }
+    public String getNomJugador1() { 
+    	return nomJugador1; 
+    }
+    
+    public void setNomJugador1(String nomJugador1) { 
+    	this.nomJugador1 = nomJugador1; 
+    }
 
-    public String getJugador2Id() { return jugador2Id; }
-    public void setJugador2Id(String jugador2Id) { this.jugador2Id = jugador2Id; }
+    public String getJugador2Id() { 
+    	return jugador2Id;
+    }
+    
+    public void setJugador2Id(String jugador2Id) { 
+    	this.jugador2Id = jugador2Id; 
+    }
 
-    public String getNomJugador2() { return nomJugador2; }
-    public void setNomJugador2(String nomJugador2) { this.nomJugador2 = nomJugador2; }
+    public String getNomJugador2() { 
+    	return nomJugador2; 
+    }
+    
+    public void setNomJugador2(String nomJugador2) { 
+    	this.nomJugador2 = nomJugador2; 
+    }
 
-    public Reserva.EstatReserva getEstat() { return estat; }
-    public void setEstat(Reserva.EstatReserva estat) { this.estat = estat; }
+    public Reserva.EstatReserva getEstat() { 
+    	return estat; 
+    }
+    
+    public void setEstat(Reserva.EstatReserva estat) { 
+    	this.estat = estat; 
+    }
 
-    public LocalDateTime getDataCreacio() { return dataCreacio; }
-    public void setDataCreacio(LocalDateTime dataCreacio) { this.dataCreacio = dataCreacio; }
+    public LocalDateTime getDataCreacio() { 
+    	return dataCreacio; 
+    }
+    
+    public void setDataCreacio(LocalDateTime dataCreacio) { 
+    	this.dataCreacio = dataCreacio; 
+    }
 }

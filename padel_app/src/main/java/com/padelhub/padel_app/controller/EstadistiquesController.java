@@ -12,6 +12,7 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
+// gestiona els endpoints d'estadístiques: consulta pròpia i consulta per id d'un altre jugador
 @RestController
 @RequestMapping("/api/estadistiques")
 @SecurityRequirement(name = "bearerAuth")
@@ -26,8 +27,8 @@ public class EstadistiquesController {
 
     @Operation(summary = "Obtenir les meves estadístiques")
     @GetMapping("/me")
-    public ResponseEntity<EstadistiquesResponse> getMevesEstadistiques(
-            @AuthenticationPrincipal UserDetails userDetails) {
+    public ResponseEntity<EstadistiquesResponse> getMevesEstadistiques(@AuthenticationPrincipal UserDetails userDetails) {
+
         String userId = userService.findByEmail(userDetails.getUsername()).getId();
         return ResponseEntity.ok(estadistiquesService.getEstadistiquesUsuari(userId));
     }

@@ -4,8 +4,10 @@ import jakarta.validation.constraints.NotBlank;
 
 import java.time.LocalDateTime;
 
+// per registrar el resultat d'una partida, se utiliza un cop la partida ja s'ha jugat.
 public class CrearResultatRequest {
 
+	// Atributs
     @NotBlank(message = "La reservaId és obligatòria")
     private String reservaId;
 
@@ -21,23 +23,55 @@ public class CrearResultatRequest {
 
     private String notes;
 
+    // Constructor
     public CrearResultatRequest() {}
 
-    public String getReservaId() { return reservaId; }
-    public void setReservaId(String reservaId) { this.reservaId = reservaId; }
+    // Getters & Setters
+    public String getReservaId() { 
+    	return reservaId; 
+    }
+    
+    public void setReservaId(String reservaId) { 
+    	this.reservaId = reservaId; 
+    }
 
-    public String getGuanyadorId() { return guanyadorId; }
-    public void setGuanyadorId(String guanyadorId) { this.guanyadorId = guanyadorId; }
+    public String getGuanyadorId() { 
+    	return guanyadorId; 
+    }
+    
+    public void setGuanyadorId(String guanyadorId) { 
+    	this.guanyadorId = guanyadorId; 
+    }
 
-    public String getPerdedorId() { return perdedorId; }
-    public void setPerdedorId(String perdedorId) { this.perdedorId = perdedorId; }
+    public String getPerdedorId() { 
+    	return perdedorId; 
+    }
+    
+    public void setPerdedorId(String perdedorId) { 
+    	this.perdedorId = perdedorId; 
+    }
 
-    public String getMarcador() { return marcador; }
-    public void setMarcador(String marcador) { this.marcador = marcador; }
+    public String getMarcador() { 
+    	return marcador; 
+    }
+    
+    public void setMarcador(String marcador) { 
+    	this.marcador = marcador; 
+    }
 
-    public LocalDateTime getDataPartida() { return dataPartida; }
-    public void setDataPartida(LocalDateTime dataPartida) { this.dataPartida = dataPartida; }
+    public LocalDateTime getDataPartida() { 
+    	return dataPartida;
+    }
+    
+    public void setDataPartida(LocalDateTime dataPartida) { 
+    	this.dataPartida = dataPartida; 
+    }
 
-    public String getNotes() { return notes; }
-    public void setNotes(String notes) { this.notes = notes; }
+    public String getNotes() { 
+    	return notes; 
+    }
+    
+    public void setNotes(String notes) { 
+    	this.notes = notes; 
+    }
 }

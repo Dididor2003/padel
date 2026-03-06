@@ -20,7 +20,9 @@ public class SwaggerConfig {
                         .title("PadelHub API REST")
                         .version("1.0")
                         .description("API per a la gestió de socis i reserves del club de padel"))
+                // tots els endpoints de l'API requereixen autenticació
                 .addSecurityItem(new SecurityRequirement().addList(securitySchemeName))
+                // envia un token JWT a la capçalera Authorization
                 .components(new Components()
                         .addSecuritySchemes(securitySchemeName,
                                 new SecurityScheme()
